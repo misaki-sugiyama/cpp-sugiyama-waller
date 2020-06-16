@@ -2,6 +2,7 @@
 #pragma once
 
 namespace sugiyama {
+
   template <class T>
   class FacPImpl {
   private:
@@ -24,5 +25,6 @@ namespace sugiyama {
     T& operator*();
     const T& operator*() const;
   };
+
 }
 

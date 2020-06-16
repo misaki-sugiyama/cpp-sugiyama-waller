@@ -5,6 +5,7 @@
 #include <utility> // for forward
 
 namespace sugiyama {
+
   template <class T>
   template <typename ...Args>
   FacPImpl<T>::FacPImpl(Args&& ...args) : m_ptr{new T{std::forward<Args>(args)...}} {}
@@ -57,4 +58,5 @@ namespace sugiyama {
 
   template <class T>
   const T& FacPImpl<T>::operator*() const { return *m_ptr; }
+
 }
