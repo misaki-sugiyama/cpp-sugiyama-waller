@@ -18,9 +18,13 @@ namespace sugiyama {
     bool operator==(const FacHiddenIter& rhs) const;
     bool operator!=(const FacHiddenIter& rhs) const;
     FacHiddenIter& operator++();
-    // These two need to be defined by user if needed
-    //const value_type& operator*() const;
-    //const value_type* operator->() const;
+    FacHiddenIter& operator--();
+    value_type& operator*();
+    value_type* operator->();
+
+    void ensureCache();
+    // This need to be defined by user
+    // void fillCache();
   };
 }
 

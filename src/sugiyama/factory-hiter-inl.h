@@ -4,11 +4,14 @@
 
 namespace sugiyama {
 
-  template <typename Itr>
+  template <typename T, typename Itr>
   class FacHiddenIterImpl {
   private:
     Itr m_it;
   public:
+    T m_cache;
+    bool isCacheValid {false};
+
     using value_type = typename Itr::value_type;
     FacHiddenIterImpl(void *pItr) : m_it{*static_cast<Itr*>(pItr)} {}
     FacHiddenIterImpl() {}
@@ -19,6 +22,12 @@ namespace sugiyama {
     }
     FacHiddenIterImpl& operator++() {
       ++m_it;
+      isCacheValid = false;
+      return *this;
+    }
+    FacHiddenIterImpl& operator--() {
+      --m_it;
+      isCacheValid = false;
       return *this;
     }
     const value_type& operator*() const {
@@ -52,5 +61,31 @@ namespace sugiyama {
   FacHiddenIter<T,Derived>& FacHiddenIter<T,Derived>::operator++() {
     ++(*pimpl);
     return *this;
+  }
+
+  template <typename T, class Derived>
+  FacHiddenIter<T,Derived>& FacHiddenIter<T,Derived>::operator--() {
+    --(*pimpl);
+    return *this;
+  }
+
+  template <typename T, class Derived>
+  void FacHiddenIter<T,Derived>::ensureCache() {
+    if (!pimpl->isCacheValid) {
+      static_cast<Derived*>(this)->fillCache();
+      pimpl->isCacheValid = true;
+    }
+  }
+
+  template <typename T, class Derived>
+  typename FacHiddenIter<T,Derived>::value_type& FacHiddenIter<T,Derived>::operator*() {
+    ensureCache();
+    return pimpl->m_cache;
+  }
+
+  template <typename T, class Derived>
+  typename FacHiddenIter<T,Derived>::value_type* FacHiddenIter<T,Derived>::operator->() {
+    ensureCache();
+    return &(pimpl->m_cache);
   }
 }

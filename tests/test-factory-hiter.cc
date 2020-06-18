@@ -5,6 +5,7 @@
 #include <set>
 #include <map>
 #include <string>
+#include <cstring> // strcmp
 
 // === Direct version: the output type is exactly the type inside the container ===
 
@@ -12,18 +13,18 @@
 class IterSetInt : public ::sugiyama::FacHiddenIter<int, IterSetInt> {
 public:
   using FacHiddenIter::FacHiddenIter;
-  const value_type& operator*() const;
+  void fillCache();
 };
 
 // These goes into implementation
 template <>
-class sugiyama::FacHiddenIter<int, IterSetInt>::Impl : public ::sugiyama::FacHiddenIterImpl<std::set<int>::iterator> {
+class sugiyama::FacHiddenIter<int, IterSetInt>::Impl : public ::sugiyama::FacHiddenIterImpl<int, std::set<int>::iterator> {
   using FacHiddenIterImpl::FacHiddenIterImpl;
 };
 template class ::sugiyama::FacHiddenIter<int, IterSetInt>;
 
-const typename IterSetInt::value_type& IterSetInt::operator*() const {
-  return **pimpl;
+void IterSetInt::fillCache() {
+  pimpl->m_cache = *(*pimpl);
 }
 
 SCENARIO("Straightforward iterator", "[hiter]") {
@@ -33,7 +34,7 @@ SCENARIO("Straightforward iterator", "[hiter]") {
   }
 
   GIVEN("An iterator for set<int>") {
-    std::set<int> s {9,3,7};
+    const std::set<int> s {9,3,7};
     THEN("It simply works") {
       auto itrBegin = s.begin();
       auto itrEnd = s.end();
@@ -57,16 +58,41 @@ SCENARIO("Straightforward iterator", "[hiter]") {
 class IterMapStr : public ::sugiyama::FacHiddenIter<std::pair<const char*, const char*>, IterMapStr> {
 public:
   using FacHiddenIter::FacHiddenIter;
-  value_type&& operator*() const;
+  void fillCache();
 };
 
 // These goes into implementation
 template <>
-class sugiyama::FacHiddenIter<std::pair<const char*, const char*>, IterMapStr>::Impl : public ::sugiyama::FacHiddenIterImpl<std::map<std::string, std::string>::iterator> {
+class sugiyama::FacHiddenIter<std::pair<const char*, const char*>, IterMapStr>::Impl : public ::sugiyama::FacHiddenIterImpl<std::pair<const char*, const char*>, std::map<std::string, std::string>::iterator> {
   using FacHiddenIterImpl::FacHiddenIterImpl;
 };
 template class ::sugiyama::FacHiddenIter<std::pair<const char*, const char*>, IterMapStr>;
 
-typename IterMapStr::value_type&& IterMapStr::operator*() const {
-  return std::move(std::pair((*pimpl)->first.c_str(), (*pimpl)->second.c_str()));
+void IterMapStr::fillCache() {
+  pimpl->m_cache = std::pair((*pimpl)->first.c_str(), (*pimpl)->second.c_str());
 }
+
+SCENARIO("Indirect iterator", "[hiter]") {
+
+  THEN("It should be default-constructable") {
+    IterMapStr empty;
+  }
+
+  GIVEN("An iterator for set<int>") {
+    std::map<std::string, std::string> m {{"aa", "bb"}, {"cc", "dd"}};
+    THEN("It simply works") {
+      auto itrBegin = m.begin();
+      auto itrEnd = m.end();
+      IterMapStr b {&itrBegin};
+      IterMapStr e {&itrEnd};
+      REQUIRE(strcmp(b->first, "aa") == 0);
+      REQUIRE(strcmp(b->second, "bb") == 0);
+      ++b;
+      REQUIRE(strcmp(b->first, "cc") == 0);
+      REQUIRE(strcmp(b->second, "dd") == 0);
+      REQUIRE(b != e);
+      ++b;
+      REQUIRE(b == e);
+    }
+  }
+} // end straightforward scenario
