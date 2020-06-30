@@ -10,22 +10,18 @@
 // === Direct version: the output type is exactly the type inside the container ===
 
 // These are for the header
-class IterSetInt : public ::sugiyama::FacHiddenIter<int, IterSetInt> {
+//class IterSetInt : public ::sugiyama::FacHiddenIter<int, IterSetInt> {
+class IterSetInt : public ::sugiyama::FacHiddenIterDirect<IterSetInt, int> {
 public:
-  using FacHiddenIter::FacHiddenIter;
-  void fillCache();
+  using FacHiddenIterDirect::FacHiddenIterDirect;
 };
 
 // These goes into implementation
 template <>
-class sugiyama::FacHiddenIter<int, IterSetInt>::Impl : public ::sugiyama::FacHiddenIterImpl<int, std::set<int>::iterator> {
+class sugiyama::FacHiddenIterDirect<IterSetInt, int>::Impl : public ::sugiyama::FacHiddenIterImpl<std::set<int>::iterator> {
   using FacHiddenIterImpl::FacHiddenIterImpl;
 };
-template class ::sugiyama::FacHiddenIter<int, IterSetInt>;
-
-void IterSetInt::fillCache() {
-  pimpl->m_cache = *(*pimpl);
-}
+template class ::sugiyama::FacHiddenIterDirect<IterSetInt, int>;
 
 SCENARIO("Straightforward iterator", "[hiter]") {
 
@@ -54,45 +50,45 @@ SCENARIO("Straightforward iterator", "[hiter]") {
 
 // === Indirect version: the output type need some conversion from the type inside the container ===
 
-// These are for the header
-class IterMapStr : public ::sugiyama::FacHiddenIter<std::pair<const char*, const char*>, IterMapStr> {
-public:
-  using FacHiddenIter::FacHiddenIter;
-  void fillCache();
-};
+//// These are for the header
+//class IterMapStr : public ::sugiyama::FacHiddenIter<std::pair<const char*, const char*>, IterMapStr> {
+//public:
+//  using FacHiddenIter::FacHiddenIter;
+//  void fillCache();
+//};
 
-// These goes into implementation
-template <>
-class sugiyama::FacHiddenIter<std::pair<const char*, const char*>, IterMapStr>::Impl : public ::sugiyama::FacHiddenIterImpl<std::pair<const char*, const char*>, std::map<std::string, std::string>::iterator> {
-  using FacHiddenIterImpl::FacHiddenIterImpl;
-};
-template class ::sugiyama::FacHiddenIter<std::pair<const char*, const char*>, IterMapStr>;
+//// These goes into implementation
+//template <>
+//class sugiyama::FacHiddenIter<std::pair<const char*, const char*>, IterMapStr>::Impl : public ::sugiyama::FacHiddenIterImpl<std::pair<const char*, const char*>, std::map<std::string, std::string>::iterator> {
+//  using FacHiddenIterImpl::FacHiddenIterImpl;
+//};
+//template class ::sugiyama::FacHiddenIter<std::pair<const char*, const char*>, IterMapStr>;
 
-void IterMapStr::fillCache() {
-  pimpl->m_cache = std::pair((*pimpl)->first.c_str(), (*pimpl)->second.c_str());
-}
+//void IterMapStr::fillCache() {
+//  pimpl->m_cache = std::pair((*pimpl)->first.c_str(), (*pimpl)->second.c_str());
+//}
 
-SCENARIO("Indirect iterator", "[hiter]") {
+//SCENARIO("Indirect iterator", "[hiter]") {
 
-  THEN("It should be default-constructable") {
-    IterMapStr empty;
-  }
+//  THEN("It should be default-constructable") {
+//    IterMapStr empty;
+//  }
 
-  GIVEN("An iterator for set<int>") {
-    std::map<std::string, std::string> m {{"aa", "bb"}, {"cc", "dd"}};
-    THEN("It simply works") {
-      auto itrBegin = m.begin();
-      auto itrEnd = m.end();
-      IterMapStr b {&itrBegin};
-      IterMapStr e {&itrEnd};
-      REQUIRE(strcmp(b->first, "aa") == 0);
-      REQUIRE(strcmp(b->second, "bb") == 0);
-      ++b;
-      REQUIRE(strcmp(b->first, "cc") == 0);
-      REQUIRE(strcmp(b->second, "dd") == 0);
-      REQUIRE(b != e);
-      ++b;
-      REQUIRE(b == e);
-    }
-  }
-} // end straightforward scenario
+//  GIVEN("An iterator for set<int>") {
+//    std::map<std::string, std::string> m {{"aa", "bb"}, {"cc", "dd"}};
+//    THEN("It simply works") {
+//      auto itrBegin = m.begin();
+//      auto itrEnd = m.end();
+//      IterMapStr b {&itrBegin};
+//      IterMapStr e {&itrEnd};
+//      REQUIRE(strcmp(b->first, "aa") == 0);
+//      REQUIRE(strcmp(b->second, "bb") == 0);
+//      ++b;
+//      REQUIRE(strcmp(b->first, "cc") == 0);
+//      REQUIRE(strcmp(b->second, "dd") == 0);
+//      REQUIRE(b != e);
+//      ++b;
+//      REQUIRE(b == e);
+//    }
+//  }
+//} // end straightforward scenario

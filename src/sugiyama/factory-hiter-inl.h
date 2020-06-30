@@ -4,14 +4,11 @@
 
 namespace sugiyama {
 
-  template <typename T, typename Itr>
+  template <typename Itr>
   class FacHiddenIterImpl {
   private:
     Itr m_it;
   public:
-    T m_cache;
-    bool isCacheValid {false};
-
     using value_type = typename Itr::value_type;
     FacHiddenIterImpl(void *pItr) : m_it{*static_cast<Itr*>(pItr)} {}
     FacHiddenIterImpl() {}
@@ -22,70 +19,94 @@ namespace sugiyama {
     }
     FacHiddenIterImpl& operator++() {
       ++m_it;
-      isCacheValid = false;
       return *this;
     }
     FacHiddenIterImpl& operator--() {
       --m_it;
-      isCacheValid = false;
       return *this;
     }
     const value_type& operator*() const {
       return *m_it;
     }
+    value_type& operator*() {
+      return *m_it;
+    }
     const value_type* operator->() const {
+      return &(*m_it);
+    }
+    value_type* operator->() {
       return &(*m_it);
     }
   };
 
-  template <typename T, class Derived>
-  FacHiddenIter<T,Derived>::FacHiddenIter() : pimpl{} {}
+  template <class Derived, typename T>
+  FacHiddenIterBase<Derived,T>::FacHiddenIterBase() : pimpl{} {}
 
-  template <typename T, class Derived>
-  FacHiddenIter<T,Derived>::FacHiddenIter(void *pItr) : pimpl{pItr} {}
+  template <class Derived, typename T>
+  FacHiddenIterBase<Derived,T>::FacHiddenIterBase(void *pItr) : pimpl{pItr} {}
 
-  template <typename T, class Derived>
-  FacHiddenIter<T,Derived>::~FacHiddenIter() {}
+  template <class Derived, typename T>
+  FacHiddenIterBase<Derived,T>::~FacHiddenIterBase() {}
 
-  template <typename T, class Derived>
-  bool FacHiddenIter<T,Derived>::operator==(const FacHiddenIter& rhs) const {
+  template <class Derived, typename T>
+  bool FacHiddenIterBase<Derived,T>::operator==(const FacHiddenIterBase& rhs) const {
     return *pimpl == *rhs.pimpl;
   }
 
-  template <typename T, class Derived>
-  bool FacHiddenIter<T,Derived>::operator!=(const FacHiddenIter& rhs) const {
+  template <class Derived, typename T>
+  bool FacHiddenIterBase<Derived,T>::operator!=(const FacHiddenIterBase& rhs) const {
     return !(this->operator==(rhs));
   }
 
-  template <typename T, class Derived>
-  FacHiddenIter<T,Derived>& FacHiddenIter<T,Derived>::operator++() {
+  template <class Derived, typename T>
+  FacHiddenIterBase<Derived,T>& FacHiddenIterBase<Derived,T>::operator++() {
     ++(*pimpl);
     return *this;
   }
 
-  template <typename T, class Derived>
-  FacHiddenIter<T,Derived>& FacHiddenIter<T,Derived>::operator--() {
+  template <class Derived, typename T>
+  FacHiddenIterBase<Derived,T>& FacHiddenIterBase<Derived,T>::operator--() {
     --(*pimpl);
     return *this;
   }
 
-  template <typename T, class Derived>
-  void FacHiddenIter<T,Derived>::ensureCache() {
-    if (!pimpl->isCacheValid) {
-      static_cast<Derived*>(this)->fillCache();
-      pimpl->isCacheValid = true;
-    }
+  template <class Derived, typename T>
+  const typename TraitHiddenIterDirect<Derived,T>::value_type& TraitHiddenIterDirect<Derived,T>::operator*() const {
+    return *(*(static_cast<const Derived*>(this)->pimpl));
   }
 
-  template <typename T, class Derived>
-  typename FacHiddenIter<T,Derived>::value_type& FacHiddenIter<T,Derived>::operator*() {
-    ensureCache();
-    return pimpl->m_cache;
+  //template <class Derived, typename T>
+  //typename TraitHiddenIterDirect<Derived,T>::value_type& TraitHiddenIterDirect<Derived,T>::operator*() {
+  //  return *(*(static_cast<Derived*>(this)->pimpl));
+  //}
+
+  template <class Derived, typename T>
+  const typename TraitHiddenIterDirect<Derived,T>::value_type* TraitHiddenIterDirect<Derived,T>::operator->() const {
+    return &*(*(static_cast<const Derived*>(this)->pimpl));
   }
 
-  template <typename T, class Derived>
-  typename FacHiddenIter<T,Derived>::value_type* FacHiddenIter<T,Derived>::operator->() {
-    ensureCache();
-    return &(pimpl->m_cache);
-  }
+  //template <class Derived, typename T>
+  //typename TraitHiddenIterDirect<Derived,T>::value_type* TraitHiddenIterDirect<Derived,T>::operator->() {
+  //  return &*(*(static_cast<Derived*>(this)->pimpl));
+  //}
+
+  //template <class Derived, typename T>
+  //void FacHiddenIterBase<Derived,T>::ensureCache() {
+  //  if (!pimpl->isCacheValid) {
+  //    static_cast<Derived*>(this)->fillCache();
+  //    pimpl->isCacheValid = true;
+  //  }
+  //}
+
+  //template <class Derived, typename T>
+  //typename FacHiddenIterBase<Derived,T>::value_type& FacHiddenIterBase<Derived,T>::operator*() {
+  //  ensureCache();
+  //  return pimpl->m_cache;
+  //}
+
+  //template <class Derived, typename T>
+  //typename FacHiddenIterBase<Derived,T>::value_type* FacHiddenIterBase<Derived,T>::operator->() {
+  //  ensureCache();
+  //  return &(pimpl->m_cache);
+  //}
 }
