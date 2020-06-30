@@ -4,7 +4,6 @@
 
 namespace sugiyama {
 
-  // "Derived" isn't actually used, it's just for differentiate iterators for different containers
   template <typename T, class Derived>
   class FacHiddenIter {
   protected:
