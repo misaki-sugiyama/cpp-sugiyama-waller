@@ -3,7 +3,7 @@
 
 namespace sugiyama {
 
-  template <class Derived, template<typename> class TypeCRTP>
+  template <class Derived, template<typename, typename...> class TypeCRTP, typename... Ts>
   class FacCRTP {
   protected:
     Derived& derived() {
@@ -15,7 +15,7 @@ namespace sugiyama {
   private:
     // Safeguards
     FacCRTP() {}
-    friend TypeCRTP<Derived>;
+    friend TypeCRTP<Derived, Ts...>;
   };
 
 }

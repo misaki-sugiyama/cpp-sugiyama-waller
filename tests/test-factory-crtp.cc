@@ -46,3 +46,25 @@ SCENARIO("CRTP wrapper", "[crtp]") {
   }
 
 }
+
+// === With additional template parameters === //
+
+template <class Derived, typename T>
+class Func10 : public sugiyama::FacCRTP<Derived, Func10, T> {
+public:
+  T func10() {
+    return this->derived().i+10;
+  }
+};
+
+class Final1 : public Func10<Final1, int> {
+public:
+  int i {100};
+};
+
+SCENARIO("CRTP wrapper with additional types", "[crtp]") {
+  Final1 obj;
+  THEN("It should just work") {
+    REQUIRE(obj.func10() == 110);
+  }
+}

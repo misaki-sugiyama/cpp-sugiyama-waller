@@ -7,8 +7,8 @@
 namespace sugiyama {
 
   template <class T>
-  template <typename ...Args>
-  FacPImpl<T>::FacPImpl(Args&& ...args) : m_ptr{new T{std::forward<Args>(args)...}} {}
+  template <typename... Args>
+  FacPImpl<T>::FacPImpl(Args&&... args) : m_ptr{new T{std::forward<Args>(args)...}} {}
 
   template <class T>
   FacPImpl<T>::~FacPImpl() {

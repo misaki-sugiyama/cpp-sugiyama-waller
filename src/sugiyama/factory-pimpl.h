@@ -10,7 +10,7 @@ namespace sugiyama {
     T* m_ptr {nullptr};
   public:
     // Ctor Dtor etc.
-    template <typename ...Args> FacPImpl(Args&& ...);
+    template <typename... Args> FacPImpl(Args&& ...);
     ~FacPImpl();
 
     // Move and Copy
