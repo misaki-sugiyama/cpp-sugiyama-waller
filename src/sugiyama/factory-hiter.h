@@ -11,7 +11,7 @@ namespace sugiyama {
     class Impl; FacPImpl<Impl> pimpl;
   public:
     FacHiddenIterBase();
-    FacHiddenIterBase(void* pItr);
+    FacHiddenIterBase(const void* pItr);
     virtual ~FacHiddenIterBase();
 
     using value_type = T;
@@ -26,9 +26,7 @@ namespace sugiyama {
   public:
     using value_type = T;
     const value_type& operator*() const;
-    //value_type& operator*();
     const value_type* operator->() const;
-    //value_type* operator->();
   };
 
   template <class Derived, typename T>
@@ -38,26 +36,38 @@ namespace sugiyama {
     using FacHiddenIterBase<Derived, T>::FacHiddenIterBase;
   };
 
-  template <typename T, class Derived>
-  class FacHiddenIter {
-  protected:
-    class Impl; FacPImpl<Impl> pimpl;
+  template <class Derived, typename T>
+  class TraitHiddenIterDirectOutput : public TraitHiddenIterDirect<Derived, T> {
   public:
-    FacHiddenIter();
-    FacHiddenIter(void* pItr);
-    virtual ~FacHiddenIter();
-
     using value_type = T;
-    bool operator==(const FacHiddenIter& rhs) const;
-    bool operator!=(const FacHiddenIter& rhs) const;
-    FacHiddenIter& operator++();
-    FacHiddenIter& operator--();
     value_type& operator*();
     value_type* operator->();
-
-    void ensureCache();
-    // This need to be defined by user
-    // void fillCache();
   };
+
+  template <class Derived, typename T>
+  class FacHiddenIterDirectOutput : public FacHiddenIterBase<Derived, T>, public TraitHiddenIterDirectOutput<Derived, T> {
+    friend class TraitHiddenIterDirectOutput<Derived, T>;
+  public:
+    using FacHiddenIterBase<Derived, T>::FacHiddenIterBase;
+  };
+
+  template <class Derived, typename T>
+  class TraitHiddenIterIndirect {
+  protected:
+    T m_cache;
+  public:
+    using value_type = T;
+    void ensureCache();
+    const value_type& operator*() const;
+    const value_type* operator->() const;
+  };
+
+  template <class Derived, typename T>
+  class FacHiddenIterIndirect : public FacHiddenIterBase<Derived, T>, public TraitHiddenIterIndirect<Derived, T> {
+    friend class TraitHiddenIterIndirect<Derived, T>;
+  public:
+    using FacHiddenIterBase<Derived, T>::FacHiddenIterBase;
+  };
+
 }
 
