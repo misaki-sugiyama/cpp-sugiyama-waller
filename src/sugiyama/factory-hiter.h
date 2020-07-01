@@ -22,7 +22,7 @@ namespace sugiyama {
   };
 
   template <class Derived, typename T>
-  class TraitHiddenIterDirect {
+  class TraitHiddenIterDirect : public FacCRTP<TraitHiddenIterDirect, Derived, T> {
   public:
     using value_type = T;
     const value_type& operator*() const;
@@ -52,7 +52,7 @@ namespace sugiyama {
   };
 
   template <class Derived, typename T>
-  class TraitHiddenIterIndirect {
+  class TraitHiddenIterIndirect : public FacCRTP<TraitHiddenIterIndirect, Derived, T> {
   protected:
     T m_cache;
   public:

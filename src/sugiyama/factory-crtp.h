@@ -3,7 +3,7 @@
 
 namespace sugiyama {
 
-  template <class Derived, template<typename, typename...> class TypeCRTP, typename... Ts>
+  template <template<typename, typename...> class TypeCRTP, class Derived, typename... Ts>
   class FacCRTP {
   protected:
     Derived& derived() {

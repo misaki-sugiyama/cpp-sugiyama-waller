@@ -2,7 +2,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 template <class Derived>
-class Func1 : public sugiyama::FacCRTP<Derived, Func1> {
+class Func1 : public sugiyama::FacCRTP<Func1, Derived> {
 public:
   int func1() {
     return this->derived().i+1;
@@ -10,7 +10,7 @@ public:
 };
 
 template <class Derived>
-class Func2 : public sugiyama::FacCRTP<Derived, Func2> {
+class Func2 : public sugiyama::FacCRTP<Func2, Derived> {
 public:
   int func2() {
     return this->derived().i+2;
@@ -50,7 +50,7 @@ SCENARIO("CRTP wrapper", "[crtp]") {
 // === With additional template parameters === //
 
 template <class Derived, typename T>
-class Func10 : public sugiyama::FacCRTP<Derived, Func10, T> {
+class Func10 : public sugiyama::FacCRTP<Func10, Derived, T> {
 public:
   T func10() {
     return this->derived().i+10;

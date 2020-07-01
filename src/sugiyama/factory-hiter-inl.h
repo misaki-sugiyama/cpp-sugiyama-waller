@@ -76,29 +76,29 @@ namespace sugiyama {
 
   template <class Derived, typename T>
   const typename TraitHiddenIterDirect<Derived,T>::value_type& TraitHiddenIterDirect<Derived,T>::operator*() const {
-    return *(*(static_cast<const Derived*>(this)->pimpl));
+    return **this->derived().pimpl;
   }
 
   template <class Derived, typename T>
   const typename TraitHiddenIterDirect<Derived,T>::value_type* TraitHiddenIterDirect<Derived,T>::operator->() const {
-    return &*(*(static_cast<const Derived*>(this)->pimpl));
+    return &**this->derived().pimpl;
   }
 
   template <class Derived, typename T>
   typename TraitHiddenIterDirectOutput<Derived,T>::value_type& TraitHiddenIterDirectOutput<Derived,T>::operator*() {
-    return *(*(static_cast<Derived*>(this)->pimpl));
+    return **this->derived().pimpl;
   }
 
   template <class Derived, typename T>
   typename TraitHiddenIterDirectOutput<Derived,T>::value_type* TraitHiddenIterDirectOutput<Derived,T>::operator->() {
-    return &*(*(static_cast<Derived*>(this)->pimpl));
+    return &**this->derived().pimpl;
   }
 
   template <class Derived, typename T>
   void TraitHiddenIterIndirect<Derived,T>::ensureCache() {
-    if (!static_cast<Derived*>(this)->pimpl->m_isCacheValid) {
-      static_cast<Derived*>(this)->fillCache();
-      static_cast<Derived*>(this)->pimpl->m_isCacheValid = true;
+    if (!this->derived().pimpl->m_isCacheValid) {
+      this->derived().fillCache();
+      this->derived().pimpl->m_isCacheValid = true;
     }
   }
 
