@@ -1,3 +1,4 @@
+#pragma once
 #include "sugiyama/pimpl.h"
 
 class Test0 {

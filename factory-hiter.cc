@@ -8,40 +8,40 @@
 #include <string>
 #include <cstring> // strcmp
 
-// === Direct version: the output type is exactly the type inside the container ===
-
-// These are for the header
-class IterSetInt : public ::sugiyama::FacHiddenIterDirect<IterSetInt, int> {
-public:
-  using FacHiddenIterDirect::FacHiddenIterDirect;
-};
-
-// These goes into implementation
-template <>
-class sugiyama::FacHiddenIterDirect<IterSetInt, int>::Impl : public ::sugiyama::FacHiddenIterImpl<IterSetInt, std::set<int>::iterator> {
-  using FacHiddenIterImpl::FacHiddenIterImpl;
-};
-template class ::sugiyama::FacHiddenIterDirect<IterSetInt, int>;
-
-SCENARIO("Straightforward iterator", "[hiter]") {
-
-  THEN("It should be default-constructable") {
-    IterSetInt empty;
-  }
-
-  GIVEN("An iterator for set<int>") {
-    const std::set<int> s {9,3,7};
-    THEN("It simply works") {
-      auto itr = s.begin(), itrEnd = s.end();
-      IterSetInt b {&itr}, e {&itrEnd};
-      for (; itr != itrEnd; ++itr, ++b) {
-        REQUIRE(*b == *itr);
-        REQUIRE(b != e);
-      }
-      REQUIRE(b == e);
-    }
-  }
-} // end straightforward scenario
+//// === Direct version: the output type is exactly the type inside the container ===
+//
+//// These are for the header
+//class IterSetInt : public ::sugiyama::FacHiddenIterDirect<IterSetInt, int> {
+//public:
+//  using FacHiddenIterDirect::FacHiddenIterDirect;
+//};
+//
+//// These goes into implementation
+//template <>
+//class sugiyama::FacHiddenIterBase<IterSetInt, int>::Impl : public ::sugiyama::FacHiddenIterImpl<IterSetInt, std::set<int>::iterator> {
+//  using FacHiddenIterImpl::FacHiddenIterImpl;
+//};
+//template class ::sugiyama::FacHiddenIterDirect<IterSetInt, int>;
+//
+//SCENARIO("Straightforward iterator", "[hiter]") {
+//
+//  THEN("It should be default-constructable") {
+//    IterSetInt empty;
+//  }
+//
+//  GIVEN("An iterator for set<int>") {
+//    const std::set<int> s {9,3,7};
+//    THEN("It simply works") {
+//      auto itr = s.begin(), itrEnd = s.end();
+//      IterSetInt b {&itr}, e {&itrEnd};
+//      for (; itr != itrEnd; ++itr, ++b) {
+//        REQUIRE(*b == *itr);
+//        REQUIRE(b != e);
+//      }
+//      REQUIRE(b == e);
+//    }
+//  }
+//} // end straightforward scenario
 
 // === Direct version: Modifiable iterator ===
 

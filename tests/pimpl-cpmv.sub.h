@@ -1,3 +1,4 @@
+#pragma once
 #include "sugiyama/pimpl.h"
 
 namespace testclass {

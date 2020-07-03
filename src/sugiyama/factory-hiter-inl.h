@@ -43,74 +43,74 @@ namespace sugiyama {
     }
   };
 
-  template <class Derived, typename T>
-  FacHiddenIterBase<Derived,T>::FacHiddenIterBase() : pimpl{} {}
+  template <class Derived, typename T, template<class, typename> class... Caps>
+  FacHiddenIter<Derived,T,Caps...>::FacHiddenIter() : pimpl{} {}
 
   template <class Derived, typename T>
-  FacHiddenIterBase<Derived,T>::FacHiddenIterBase(const void *pItr) : pimpl{pItr} {}
+  FacHiddenIter<Derived,T>::FacHiddenIter(const void *pItr) : pimpl{pItr} {}
 
   template <class Derived, typename T>
-  FacHiddenIterBase<Derived,T>::~FacHiddenIterBase() {}
+  FacHiddenIter<Derived,T>::~FacHiddenIter() {}
 
   template <class Derived, typename T>
-  bool FacHiddenIterBase<Derived,T>::operator==(const FacHiddenIterBase& rhs) const {
+  bool FacHiddenIter<Derived,T>::operator==(const FacHiddenIter& rhs) const {
     return *pimpl == *rhs.pimpl;
   }
 
   template <class Derived, typename T>
-  bool FacHiddenIterBase<Derived,T>::operator!=(const FacHiddenIterBase& rhs) const {
+  bool FacHiddenIter<Derived,T>::operator!=(const FacHiddenIter& rhs) const {
     return !(this->operator==(rhs));
   }
 
   template <class Derived, typename T>
-  FacHiddenIterBase<Derived,T>& FacHiddenIterBase<Derived,T>::operator++() {
+  FacHiddenIter<Derived,T>& FacHiddenIter<Derived,T>::operator++() {
     ++(*pimpl);
     return *this;
   }
 
-  template <class Derived, typename T>
-  FacHiddenIterBase<Derived,T>& FacHiddenIterBase<Derived,T>::operator--() {
-    --(*pimpl);
-    return *this;
-  }
+  //template <class Derived, typename T>
+  //FacHiddenIter<Derived,T>& FacHiddenIter<Derived,T>::operator--() {
+  //  --(*pimpl);
+  //  return *this;
+  //}
 
   template <class Derived, typename T>
-  const typename TraitHiddenIterDirect<Derived,T>::value_type& TraitHiddenIterDirect<Derived,T>::operator*() const {
+  const typename HiddenIterCapDirect<Derived,T>::value_type& HiddenIterCapDirect<Derived,T>::operator*() const {
     return **this->derived().pimpl;
   }
 
   template <class Derived, typename T>
-  const typename TraitHiddenIterDirect<Derived,T>::value_type* TraitHiddenIterDirect<Derived,T>::operator->() const {
+  const typename HiddenIterCapDirect<Derived,T>::value_type* HiddenIterCapDirect<Derived,T>::operator->() const {
     return &**this->derived().pimpl;
   }
 
-  template <class Derived, typename T>
-  typename TraitHiddenIterDirectOutput<Derived,T>::value_type& TraitHiddenIterDirectOutput<Derived,T>::operator*() {
-    return **this->derived().pimpl;
-  }
+  //template <class Derived, typename T>
+  //typename HiddenIterCapDirectOutput<Derived,T>::value_type& HiddenIterCapDirectOutput<Derived,T>::operator*() {
+  //  return **this->derived().pimpl;
+  //}
 
-  template <class Derived, typename T>
-  typename TraitHiddenIterDirectOutput<Derived,T>::value_type* TraitHiddenIterDirectOutput<Derived,T>::operator->() {
-    return &**this->derived().pimpl;
-  }
+  //template <class Derived, typename T>
+  //typename HiddenIterCapDirectOutput<Derived,T>::value_type* HiddenIterCapDirectOutput<Derived,T>::operator->() {
+  //  return &**this->derived().pimpl;
+  //}
 
-  template <class Derived, typename T>
-  void TraitHiddenIterIndirect<Derived,T>::ensureCache() {
-    if (!this->derived().pimpl->m_isCacheValid) {
-      this->derived().fillCache();
-      this->derived().pimpl->m_isCacheValid = true;
-    }
-  }
+  //template <class Derived, typename T>
+  //void TraitHiddenIterIndirect<Derived,T>::ensureCache() {
+  //  if (!this->derived().pimpl->m_isCacheValid) {
+  //    this->derived().fillCache();
+  //    this->derived().pimpl->m_isCacheValid = true;
+  //  }
+  //}
 
-  template <class Derived, typename T>
-  const typename TraitHiddenIterIndirect<Derived,T>::value_type& TraitHiddenIterIndirect<Derived,T>::operator*() const {
-    const_cast<TraitHiddenIterIndirect<Derived,T>*>(this)->ensureCache();
-    return m_cache;
-  }
+  //template <class Derived, typename T>
+  //const typename TraitHiddenIterIndirect<Derived,T>::value_type& TraitHiddenIterIndirect<Derived,T>::operator*() const {
+  //  const_cast<TraitHiddenIterIndirect<Derived,T>*>(this)->ensureCache();
+  //  return m_cache;
+  //}
 
-  template <class Derived, typename T>
-  const typename TraitHiddenIterIndirect<Derived,T>::value_type* TraitHiddenIterIndirect<Derived,T>::operator->() const {
-    const_cast<TraitHiddenIterIndirect<Derived,T>*>(this)->ensureCache();
-    return &(m_cache);
-  }
+  //template <class Derived, typename T>
+  //const typename TraitHiddenIterIndirect<Derived,T>::value_type* TraitHiddenIterIndirect<Derived,T>::operator->() const {
+  //  const_cast<TraitHiddenIterIndirect<Derived,T>*>(this)->ensureCache();
+  //  return &(m_cache);
+  //}
 }

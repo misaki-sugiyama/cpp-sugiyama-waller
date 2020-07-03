@@ -1,4 +1,4 @@
-// Simple pimpl object with no parameters - subject pimpl0
+// Simple pimpl object with no parameters
 #include "pimpl0.sub.h"
 #include <catch2/catch_test_macros.hpp>
 
