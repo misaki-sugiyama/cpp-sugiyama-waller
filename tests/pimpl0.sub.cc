@@ -1,5 +1,5 @@
 #include "sugiyama/pimpl-inl.h"
-#include "subj-pimpl0.h"
+#include "pimpl0.sub.h"
 
 class Test0::Impl {
 public:

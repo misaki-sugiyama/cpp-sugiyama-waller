@@ -1,5 +1,5 @@
+#include "pimpl-cpmv.sub.h"
 #include "sugiyama/pimpl-inl.h"
-#include "subj-pimpl-cpmv.h"
 
 #include <vector>
 
