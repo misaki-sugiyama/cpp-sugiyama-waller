@@ -1,6 +1,6 @@
 // The inline implementation file of the pimpl factory
 #pragma once
-#include "sugiyama/factory-pimpl.h"
+#include "sugiyama/pimpl.h"
 
 #include <utility> // for forward
 
@@ -8,22 +8,22 @@ namespace sugiyama {
 
   template <class T>
   template <typename... Args>
-  FacPImpl<T>::FacPImpl(Args&&... args) : m_ptr{new T{std::forward<Args>(args)...}} {}
+  PImpl<T>::PImpl(Args&&... args) : m_ptr{new T{std::forward<Args>(args)...}} {}
 
   template <class T>
-  FacPImpl<T>::~FacPImpl() {
+  PImpl<T>::~PImpl() {
     if (m_ptr) delete m_ptr;
   }
 
   // == Move and Copy ==
 
   template <class T>
-  FacPImpl<T>::FacPImpl(FacPImpl<T>&& rhs) noexcept : m_ptr{rhs.m_ptr} {
+  PImpl<T>::PImpl(PImpl<T>&& rhs) noexcept : m_ptr{rhs.m_ptr} {
     rhs.m_ptr = nullptr;
   }
 
   template <class T>
-  FacPImpl<T>& FacPImpl<T>::operator=(FacPImpl<T>&& rhs) noexcept {
+  PImpl<T>& PImpl<T>::operator=(PImpl<T>&& rhs) noexcept {
     if (m_ptr != rhs.m_ptr) {
       if (m_ptr) delete m_ptr;
       m_ptr = rhs.m_ptr;
@@ -34,10 +34,10 @@ namespace sugiyama {
   }
 
   template <class T>
-  FacPImpl<T>::FacPImpl(const FacPImpl<T>& rhs) : m_ptr{new T{*rhs.m_ptr}} {}
+  PImpl<T>::PImpl(const PImpl<T>& rhs) : m_ptr{new T{*rhs.m_ptr}} {}
 
   template <class T>
-  FacPImpl<T>& FacPImpl<T>::operator=(const FacPImpl<T>& rhs) {
+  PImpl<T>& PImpl<T>::operator=(const PImpl<T>& rhs) {
     if (m_ptr != rhs.m_ptr) {
       if (m_ptr) delete m_ptr;
       m_ptr = new T{*rhs.m_ptr};
@@ -48,23 +48,23 @@ namespace sugiyama {
   // == Overloadings ==
 
   template <class T>
-  T* FacPImpl<T>::operator->() { return m_ptr; }
+  T* PImpl<T>::operator->() { return m_ptr; }
 
   template <class T>
-  const T* FacPImpl<T>::operator->() const { return m_ptr; }
+  const T* PImpl<T>::operator->() const { return m_ptr; }
 
   template <class T>
-  T& FacPImpl<T>::operator*() { return *m_ptr; }
+  T& PImpl<T>::operator*() { return *m_ptr; }
 
   template <class T>
-  const T& FacPImpl<T>::operator*() const { return *m_ptr; }
+  const T& PImpl<T>::operator*() const { return *m_ptr; }
 
 }
 
 // == Convenient macros ==
 
 #define SUGIYAMA_PIMPL_INST(ClassImpl) \
-  template class ::sugiyama::FacPImpl<ClassImpl>;
+  template class ::sugiyama::PImpl<ClassImpl>;
 
 #define SUGIYAMA_PIMPL_CPMV_DEF(ClassNameWithNamespace, ClassName) \
   ClassNameWithNamespace::~ClassName() = default; \

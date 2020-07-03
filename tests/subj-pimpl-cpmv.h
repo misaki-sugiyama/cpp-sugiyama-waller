@@ -1,11 +1,11 @@
-#include "sugiyama/factory-pimpl.h"
+#include "sugiyama/pimpl.h"
 
 namespace testclass {
 
   class TestCpMv {
   private:
     class Impl;
-    sugiyama::FacPImpl<Impl> pimpl;
+    sugiyama::PImpl<Impl> pimpl;
   public:
     TestCpMv();
     TestCpMv(int a);

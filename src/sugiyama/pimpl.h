@@ -4,20 +4,20 @@
 namespace sugiyama {
 
   template <class T>
-  class FacPImpl {
+  class PImpl {
   private:
     // Yes, horrible raw pointer in order not to include smart pointer headers here
     T* m_ptr {nullptr};
   public:
     // Ctor Dtor etc.
-    template <typename... Args> FacPImpl(Args&& ...);
-    ~FacPImpl();
+    template <typename... Args> PImpl(Args&& ...);
+    ~PImpl();
 
     // Move and Copy
-    FacPImpl(FacPImpl<T>&& rhs) noexcept;
-    FacPImpl<T>& operator=(FacPImpl<T>&& rhs) noexcept;
-    FacPImpl(const FacPImpl<T>& rhs);
-    FacPImpl<T>& operator=(const FacPImpl<T>& rhs);
+    PImpl(PImpl<T>&& rhs) noexcept;
+    PImpl<T>& operator=(PImpl<T>&& rhs) noexcept;
+    PImpl(const PImpl<T>& rhs);
+    PImpl<T>& operator=(const PImpl<T>& rhs);
 
     // Overloadings to get the actual underlying implementation object
     T* operator->();

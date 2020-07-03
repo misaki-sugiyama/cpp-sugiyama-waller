@@ -1,4 +1,4 @@
-#include "sugiyama/factory-pimpl-inl.h"
+#include "sugiyama/pimpl-inl.h"
 #include "subj-pimpl-cpmv.h"
 
 #include <vector>

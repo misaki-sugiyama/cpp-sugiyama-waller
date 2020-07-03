@@ -1,10 +1,10 @@
-// The factory to slightly reduce CRTP boilerplate
+// A helper class to reduce CRTP boilerplate (static_cast)
 #pragma once
 
 namespace sugiyama {
 
   template <template<typename, typename...> class TypeCRTP, class Derived, typename... Ts>
-  class FacCRTP {
+  class CRTPHelper {
   protected:
     Derived& derived() {
       return static_cast<Derived&>(*this);
@@ -14,7 +14,7 @@ namespace sugiyama {
     }
   private:
     // Safeguards
-    FacCRTP() {}
+    CRTPHelper() {}
     friend TypeCRTP<Derived, Ts...>;
   };
 

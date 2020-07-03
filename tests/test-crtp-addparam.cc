@@ -1,9 +1,9 @@
 // Tests for CRTP wrapper with additional template parameters
-#include "sugiyama/factory-crtp.h"
+#include "sugiyama/crtp.h"
 #include <catch2/catch_test_macros.hpp>
 
 template <class Derived, typename T>
-class Func10 : public sugiyama::FacCRTP<Func10, Derived, T> {
+class Func10 : public sugiyama::CRTPHelper<Func10, Derived, T> {
 public:
   T func10() {
     return this->derived().i+10;

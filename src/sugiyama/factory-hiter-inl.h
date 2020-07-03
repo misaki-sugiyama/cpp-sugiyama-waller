@@ -1,6 +1,6 @@
 // The inline implementation file of the hidden iterator factory
 #pragma once
-#include "sugiyama/factory-pimpl-inl.h"
+#include "sugiyama/pimpl-inl.h"
 
 namespace sugiyama {
 

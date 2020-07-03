@@ -1,4 +1,4 @@
-#include "sugiyama/factory-pimpl-inl.h"
+#include "sugiyama/pimpl-inl.h"
 #include "subj-pimpl0.h"
 
 class Test0::Impl {

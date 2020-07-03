@@ -1,14 +1,14 @@
 // Hidden iterator that doesn't show the underlying iterator type
 #pragma once
-#include "sugiyama/factory-pimpl.h"
-#include "sugiyama/factory-crtp.h"
+#include "sugiyama/pimpl.h"
+#include "sugiyama/crtp.h"
 
 namespace sugiyama {
 
   template <class Derived, typename T>
   class FacHiddenIterBase {
   protected:
-    class Impl; FacPImpl<Impl> pimpl;
+    class Impl; PImpl<Impl> pimpl;
   public:
     FacHiddenIterBase();
     FacHiddenIterBase(const void* pItr);
@@ -22,7 +22,7 @@ namespace sugiyama {
   };
 
   template <class Derived, typename T>
-  class TraitHiddenIterDirect : public FacCRTP<TraitHiddenIterDirect, Derived, T> {
+  class TraitHiddenIterDirect : public CRTPHelper<TraitHiddenIterDirect, Derived, T> {
   public:
     using value_type = T;
     const value_type& operator*() const;
@@ -52,7 +52,7 @@ namespace sugiyama {
   };
 
   template <class Derived, typename T>
-  class TraitHiddenIterIndirect : public FacCRTP<TraitHiddenIterIndirect, Derived, T> {
+  class TraitHiddenIterIndirect : public CRTPHelper<TraitHiddenIterIndirect, Derived, T> {
   protected:
     T m_cache;
   public:
@@ -70,4 +70,3 @@ namespace sugiyama {
   };
 
 }
-
