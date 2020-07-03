@@ -20,7 +20,7 @@ public:
 testclass::TestCpMv::TestCpMv() : pimpl(0) {}
 testclass::TestCpMv::TestCpMv(int a) : pimpl(a) {}
 
-SUGIYAMA_PIMPL_CPMV_DEF(testclass::TestCpMv, TestCpMv);
+SUGIYAMA_PIMPL_FIVE_DEF(testclass::TestCpMv, TestCpMv);
 
 int* testclass::TestCpMv::getPtr() {
   return pimpl->getPtr();

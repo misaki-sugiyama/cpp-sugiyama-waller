@@ -30,9 +30,9 @@ namespace sugiyama {
 
 // == Convenient macros ==
 
-#define SUGIYAMA_PIMPL_CPMV_DEC(ClassName) \
-  ~ClassName(); \
+#define SUGIYAMA_PIMPL_FIVE_DEC(ClassName) \
+  virtual ~ClassName(); \
   ClassName(ClassName&& rhs) noexcept; \
-  ClassName& operator=(ClassName&& rhs) noexcept; \
+  virtual ClassName& operator=(ClassName&& rhs) noexcept; \
   ClassName(const ClassName& rhs); \
-  ClassName& operator=(const ClassName& rhs);
+  virtual ClassName& operator=(const ClassName& rhs);

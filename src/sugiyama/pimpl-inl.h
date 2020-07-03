@@ -66,9 +66,9 @@ namespace sugiyama {
 #define SUGIYAMA_PIMPL_INST(ClassImpl) \
   template class ::sugiyama::PImpl<ClassImpl>;
 
-#define SUGIYAMA_PIMPL_CPMV_DEF(ClassNameWithNamespace, ClassName) \
-  ClassNameWithNamespace::~ClassName() = default; \
-  ClassNameWithNamespace::ClassName(ClassNameWithNamespace&& rhs) noexcept = default; \
-  ClassNameWithNamespace& ClassNameWithNamespace::operator=(ClassNameWithNamespace&& rhs) noexcept = default; \
-  ClassNameWithNamespace::ClassName(const ClassNameWithNamespace& rhs) = default; \
-  ClassNameWithNamespace& ClassNameWithNamespace::operator=(const ClassNameWithNamespace& rhs) = default;
+#define SUGIYAMA_PIMPL_FIVE_DEF(ClassType, ClassName) \
+  ClassType::~ClassName() = default; \
+  ClassType::ClassName(ClassType&& rhs) noexcept = default; \
+  ClassType& ClassType::operator=(ClassType&& rhs) noexcept = default; \
+  ClassType::ClassName(const ClassType& rhs) = default; \
+  ClassType& ClassType::operator=(const ClassType& rhs) = default;

@@ -10,7 +10,7 @@ namespace testclass {
     TestCpMv();
     TestCpMv(int a);
 
-    SUGIYAMA_PIMPL_CPMV_DEC(TestCpMv);
+    SUGIYAMA_PIMPL_FIVE_DEC(TestCpMv);
 
     int* getPtr();
   };
