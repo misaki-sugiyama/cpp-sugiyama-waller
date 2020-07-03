@@ -60,3 +60,15 @@ namespace sugiyama {
   const T& FacPImpl<T>::operator*() const { return *m_ptr; }
 
 }
+
+// == Convenient macros ==
+
+#define SUGIYAMA_PIMPL_INST(ClassImpl) \
+  template class ::sugiyama::FacPImpl<ClassImpl>;
+
+#define SUGIYAMA_PIMPL_CPMV_DEF(ClassNameWithNamespace, ClassName) \
+  ClassNameWithNamespace::~ClassName() = default; \
+  ClassNameWithNamespace::ClassName(ClassNameWithNamespace&& rhs) noexcept = default; \
+  ClassNameWithNamespace& ClassNameWithNamespace::operator=(ClassNameWithNamespace&& rhs) noexcept = default; \
+  ClassNameWithNamespace::ClassName(const ClassNameWithNamespace& rhs) = default; \
+  ClassNameWithNamespace& ClassNameWithNamespace::operator=(const ClassNameWithNamespace& rhs) = default;

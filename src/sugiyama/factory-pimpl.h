@@ -18,7 +18,7 @@ namespace sugiyama {
     FacPImpl<T>& operator=(FacPImpl<T>&& rhs) noexcept;
     FacPImpl(const FacPImpl<T>& rhs);
     FacPImpl<T>& operator=(const FacPImpl<T>& rhs);
-    
+
     // Overloadings to get the actual underlying implementation object
     T* operator->();
     const T* operator->() const;
@@ -28,3 +28,11 @@ namespace sugiyama {
 
 }
 
+// == Convenient macros ==
+
+#define SUGIYAMA_PIMPL_CPMV_DEC(ClassName) \
+  ~ClassName(); \
+  ClassName(ClassName&& rhs) noexcept; \
+  ClassName& operator=(ClassName&& rhs) noexcept; \
+  ClassName(const ClassName& rhs); \
+  ClassName& operator=(const ClassName& rhs);
