@@ -28,6 +28,17 @@ namespace sugiyama {
       Bidir& operator--();
     };
 
+    template <class Derived, typename T>
+    class Indirect {
+    protected:
+      T m_cache;
+    public:
+      using value_type = T;
+      void ensureCache();
+      const value_type& operator*() const;
+      const value_type* operator->() const;
+    };
+
   }
 
   template <class Derived, typename T, template<class, typename> class... Caps>
@@ -36,6 +47,7 @@ namespace sugiyama {
     friend class HiddenIterCap::Input<Derived, T>;
     friend class HiddenIterCap::Output<Derived, T>;
     friend class HiddenIterCap::Bidir<Derived, T>;
+    friend class HiddenIterCap::Indirect<Derived, T>;
   protected:
     class Impl; PImpl<Impl> pimpl;
   public:
@@ -50,6 +62,9 @@ namespace sugiyama {
   };
 
   template <class Derived, typename T>
+  using FacHiddenIterIndirect = FacHiddenIter<Derived, T, HiddenIterCap::Indirect>;
+
+  template <class Derived, typename T>
   using FacHiddenIterInput = FacHiddenIter<Derived, T, HiddenIterCap::Input>;
 
   template <class Derived, typename T>
@@ -60,24 +75,5 @@ namespace sugiyama {
 
   template <class Derived, typename T>
   using FacHiddenIterBiOutput = FacHiddenIter<Derived, T, HiddenIterCap::Bidir, HiddenIterCap::Output>;
-
-
-  //template <class Derived, typename T>
-  //class TraitHiddenIterIndirect : public CRTPHelper<TraitHiddenIterIndirect, Derived, T> {
-  //protected:
-  //  T m_cache;
-  //public:
-  //  using value_type = T;
-  //  void ensureCache();
-  //  const value_type& operator*() const;
-  //  const value_type* operator->() const;
-  //};
-
-  //template <class Derived, typename T>
-  //class FacHiddenIterIndirect : public FacHiddenIter<Derived, T>, public TraitHiddenIterIndirect<Derived, T> {
-  //  friend class TraitHiddenIterIndirect<Derived, T>;
-  //public:
-  //  using FacHiddenIter<Derived, T>::FacHiddenIter;
-  //};
 
 }

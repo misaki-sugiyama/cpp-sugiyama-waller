@@ -95,25 +95,25 @@ namespace sugiyama {
     return *this;
   }
 
-  //template <class Derived, typename T>
-  //void TraitHiddenIterIndirect<Derived,T>::ensureCache() {
-  //  if (!DERIVED.pimpl->m_isCacheValid) {
-  //    DERIVED.fillCache();
-  //    DERIVED.pimpl->m_isCacheValid = true;
-  //  }
-  //}
+  template <class Derived, typename T>
+  void HiddenIterCap::Indirect<Derived,T>::ensureCache() {
+    if (!DERIVED.pimpl->m_isCacheValid) {
+      DERIVED.fillCache();
+      DERIVED.pimpl->m_isCacheValid = true;
+    }
+  }
 
-  //template <class Derived, typename T>
-  //const typename TraitHiddenIterIndirect<Derived,T>::value_type& TraitHiddenIterIndirect<Derived,T>::operator*() const {
-  //  const_cast<TraitHiddenIterIndirect<Derived,T>*>(this)->ensureCache();
-  //  return m_cache;
-  //}
+  template <class Derived, typename T>
+  const typename HiddenIterCap::Indirect<Derived,T>::value_type& HiddenIterCap::Indirect<Derived,T>::operator*() const {
+    const_cast<HiddenIterCap::Indirect<Derived,T>*>(this)->ensureCache();
+    return m_cache;
+  }
 
-  //template <class Derived, typename T>
-  //const typename TraitHiddenIterIndirect<Derived,T>::value_type* TraitHiddenIterIndirect<Derived,T>::operator->() const {
-  //  const_cast<TraitHiddenIterIndirect<Derived,T>*>(this)->ensureCache();
-  //  return &(m_cache);
-  //}
+  template <class Derived, typename T>
+  const typename HiddenIterCap::Indirect<Derived,T>::value_type* HiddenIterCap::Indirect<Derived,T>::operator->() const {
+    const_cast<HiddenIterCap::Indirect<Derived,T>*>(this)->ensureCache();
+    return &(m_cache);
+  }
 }
 
 #define SUGIYAMA_HITER_INST_IMPL(IterClass, Derived, T, T2) \
@@ -144,3 +144,8 @@ namespace sugiyama {
   template class ::sugiyama::FacHiddenIter<Derived, T, ::sugiyama::HiddenIterCap::Bidir, ::sugiyama::HiddenIterCap::Output>; \
   template class ::sugiyama::HiddenIterCap::Bidir<Derived, T>; \
   template class ::sugiyama::HiddenIterCap::Output<Derived, T>;
+
+#define SUGIYAMA_HITER_INST_INDIRECT(Derived, T, T2) \
+  SUGIYAMA_HITER_INST_IMPL(sugiyama::FacHiddenIterIndirect, Derived, T, T2); \
+  template class ::sugiyama::FacHiddenIter<Derived, T, ::sugiyama::HiddenIterCap::Indirect>; \
+  template class ::sugiyama::HiddenIterCap::Indirect<Derived, T>;
