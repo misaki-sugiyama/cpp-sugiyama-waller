@@ -1,7 +1,7 @@
 #pragma once
 #include "sugiyama/factory-hiter.h"
 
-class IterSListInt : public ::sugiyama::FacHiddenIterInput<IterSListInt, int> {
+class IterBListIntOut : public ::sugiyama::FacHiddenIterBiOutput<IterBListIntOut, int> {
 public:
   using FacHiddenIter::FacHiddenIter;
 };

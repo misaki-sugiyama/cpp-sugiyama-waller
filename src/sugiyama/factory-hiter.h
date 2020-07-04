@@ -1,12 +1,41 @@
 // Hidden iterator that doesn't show the underlying iterator type
 #pragma once
 #include "sugiyama/pimpl.h"
-#include "sugiyama/crtp.h"
 
 namespace sugiyama {
 
+  namespace HiddenIterCap {
+
+    template <class Derived, typename T>
+    class Input {
+    public:
+      using value_type = T;
+      const value_type& operator*() const;
+      const value_type* operator->() const;
+    };
+
+    template <class Derived, typename T>
+    class Output : public Input<Derived, T> {
+    public:
+      using value_type = T;
+      value_type& operator*();
+      value_type* operator->();
+    };
+
+    template <class Derived, typename T>
+    class Bidir {
+    public:
+      Bidir& operator--();
+    };
+
+  }
+
   template <class Derived, typename T, template<class, typename> class... Caps>
   class FacHiddenIter : public Caps<Derived, T>... {
+    // Just friend every possible Cap classes here
+    friend class HiddenIterCap::Input<Derived, T>;
+    friend class HiddenIterCap::Output<Derived, T>;
+    friend class HiddenIterCap::Bidir<Derived, T>;
   protected:
     class Impl; PImpl<Impl> pimpl;
   public:
@@ -18,41 +47,20 @@ namespace sugiyama {
     bool operator==(const FacHiddenIter& rhs) const;
     bool operator!=(const FacHiddenIter& rhs) const;
     FacHiddenIter& operator++();
-    //FacHiddenIter& operator--();
   };
 
   template <class Derived, typename T>
-  class HiddenIterCapDirect : public CRTPHelper<HiddenIterCapDirect, Derived, T> {
-  public:
-    using value_type = T;
-    const value_type& operator*() const;
-    const value_type* operator->() const;
-  };
+  using FacHiddenIterInput = FacHiddenIter<Derived, T, HiddenIterCap::Input>;
 
   template <class Derived, typename T>
-  using FacHiddenIterDirect = FacHiddenIter<Derived, T, HiddenIterCapDirect>;
+  using FacHiddenIterOutput = FacHiddenIter<Derived, T, HiddenIterCap::Output>;
 
-  //template <class Derived, typename T>
-  //class FacHiddenIterDirect : public FacHiddenIter<Derived, T>, public TraitHiddenIterDirect<Derived, T> {
-  //  friend class TraitHiddenIterDirect<Derived, T>;
-  //public:
-  //  using FacHiddenIter<Derived, T>::FacHiddenIter;
-  //};
+  template <class Derived, typename T>
+  using FacHiddenIterBiInput = FacHiddenIter<Derived, T, HiddenIterCap::Bidir, HiddenIterCap::Input>;
 
-  //template <class Derived, typename T>
-  //class TraitHiddenIterDirectOutput : public TraitHiddenIterDirect<Derived, T> {
-  //public:
-  //  using value_type = T;
-  //  value_type& operator*();
-  //  value_type* operator->();
-  //};
+  template <class Derived, typename T>
+  using FacHiddenIterBiOutput = FacHiddenIter<Derived, T, HiddenIterCap::Bidir, HiddenIterCap::Output>;
 
-  //template <class Derived, typename T>
-  //class FacHiddenIterDirectOutput : public FacHiddenIter<Derived, T>, public TraitHiddenIterDirectOutput<Derived, T> {
-  //  friend class TraitHiddenIterDirectOutput<Derived, T>;
-  //public:
-  //  using FacHiddenIter<Derived, T>::FacHiddenIter;
-  //};
 
   //template <class Derived, typename T>
   //class TraitHiddenIterIndirect : public CRTPHelper<TraitHiddenIterIndirect, Derived, T> {

@@ -1,5 +1,6 @@
 // The inline implementation file of the hidden iterator factory
 #pragma once
+#include "sugiyama/crtp.h"
 #include "sugiyama/pimpl-inl.h"
 
 namespace sugiyama {
@@ -46,59 +47,59 @@ namespace sugiyama {
   template <class Derived, typename T, template<class, typename> class... Caps>
   FacHiddenIter<Derived,T,Caps...>::FacHiddenIter() : pimpl{} {}
 
-  template <class Derived, typename T>
-  FacHiddenIter<Derived,T>::FacHiddenIter(const void *pItr) : pimpl{pItr} {}
+  template <class Derived, typename T, template<class, typename> class... Caps>
+  FacHiddenIter<Derived,T,Caps...>::FacHiddenIter(const void *pItr) : pimpl{pItr} {}
 
-  template <class Derived, typename T>
-  FacHiddenIter<Derived,T>::~FacHiddenIter() {}
+  template <class Derived, typename T, template<class, typename> class... Caps>
+  FacHiddenIter<Derived,T,Caps...>::~FacHiddenIter() {}
 
-  template <class Derived, typename T>
-  bool FacHiddenIter<Derived,T>::operator==(const FacHiddenIter& rhs) const {
+  template <class Derived, typename T, template<class, typename> class... Caps>
+  bool FacHiddenIter<Derived,T,Caps...>::operator==(const FacHiddenIter& rhs) const {
     return *pimpl == *rhs.pimpl;
   }
 
-  template <class Derived, typename T>
-  bool FacHiddenIter<Derived,T>::operator!=(const FacHiddenIter& rhs) const {
+  template <class Derived, typename T, template<class, typename> class... Caps>
+  bool FacHiddenIter<Derived,T,Caps...>::operator!=(const FacHiddenIter& rhs) const {
     return !(this->operator==(rhs));
   }
 
-  template <class Derived, typename T>
-  FacHiddenIter<Derived,T>& FacHiddenIter<Derived,T>::operator++() {
+  template <class Derived, typename T, template<class, typename> class... Caps>
+  FacHiddenIter<Derived,T,Caps...>& FacHiddenIter<Derived,T,Caps...>::operator++() {
     ++(*pimpl);
     return *this;
   }
 
-  //template <class Derived, typename T>
-  //FacHiddenIter<Derived,T>& FacHiddenIter<Derived,T>::operator--() {
-  //  --(*pimpl);
-  //  return *this;
-  //}
-
   template <class Derived, typename T>
-  const typename HiddenIterCapDirect<Derived,T>::value_type& HiddenIterCapDirect<Derived,T>::operator*() const {
-    return **this->derived().pimpl;
+  const typename HiddenIterCap::Input<Derived,T>::value_type& HiddenIterCap::Input<Derived,T>::operator*() const {
+    return **DERIVEDC.pimpl;
   }
 
   template <class Derived, typename T>
-  const typename HiddenIterCapDirect<Derived,T>::value_type* HiddenIterCapDirect<Derived,T>::operator->() const {
-    return &**this->derived().pimpl;
+  const typename HiddenIterCap::Input<Derived,T>::value_type* HiddenIterCap::Input<Derived,T>::operator->() const {
+    return &**DERIVEDC.pimpl;
   }
 
-  //template <class Derived, typename T>
-  //typename HiddenIterCapDirectOutput<Derived,T>::value_type& HiddenIterCapDirectOutput<Derived,T>::operator*() {
-  //  return **this->derived().pimpl;
-  //}
+  template <class Derived, typename T>
+  typename HiddenIterCap::Output<Derived,T>::value_type& HiddenIterCap::Output<Derived,T>::operator*() {
+    return **DERIVED.pimpl;
+  }
 
-  //template <class Derived, typename T>
-  //typename HiddenIterCapDirectOutput<Derived,T>::value_type* HiddenIterCapDirectOutput<Derived,T>::operator->() {
-  //  return &**this->derived().pimpl;
-  //}
+  template <class Derived, typename T>
+  typename HiddenIterCap::Output<Derived,T>::value_type* HiddenIterCap::Output<Derived,T>::operator->() {
+    return &**DERIVED.pimpl;
+  }
+
+  template <class Derived, typename T>
+  HiddenIterCap::Bidir<Derived,T>& HiddenIterCap::Bidir<Derived,T>::operator--() {
+    --(*DERIVED.pimpl);
+    return *this;
+  }
 
   //template <class Derived, typename T>
   //void TraitHiddenIterIndirect<Derived,T>::ensureCache() {
-  //  if (!this->derived().pimpl->m_isCacheValid) {
-  //    this->derived().fillCache();
-  //    this->derived().pimpl->m_isCacheValid = true;
+  //  if (!DERIVED.pimpl->m_isCacheValid) {
+  //    DERIVED.fillCache();
+  //    DERIVED.pimpl->m_isCacheValid = true;
   //  }
   //}
 
@@ -114,3 +115,32 @@ namespace sugiyama {
   //  return &(m_cache);
   //}
 }
+
+#define SUGIYAMA_HITER_INST_IMPL(IterClass, Derived, T, T2) \
+  template <> \
+  class IterClass<Derived, T>::Impl : \
+      public ::sugiyama::FacHiddenIterImpl<Derived, T2> { \
+    using FacHiddenIterImpl::FacHiddenIterImpl; \
+  };
+
+#define SUGIYAMA_HITER_INST_INPUT(Derived, T, T2) \
+  SUGIYAMA_HITER_INST_IMPL(sugiyama::FacHiddenIterInput, Derived, T, T2); \
+  template class ::sugiyama::FacHiddenIter<Derived, T, ::sugiyama::HiddenIterCap::Input>; \
+  template class ::sugiyama::HiddenIterCap::Input<Derived, T>;
+
+#define SUGIYAMA_HITER_INST_OUTPUT(Derived, T, T2) \
+  SUGIYAMA_HITER_INST_IMPL(sugiyama::FacHiddenIterOutput, Derived, T, T2); \
+  template class ::sugiyama::FacHiddenIter<Derived, T, ::sugiyama::HiddenIterCap::Output>; \
+  template class ::sugiyama::HiddenIterCap::Output<Derived, T>;
+
+#define SUGIYAMA_HITER_INST_BIINPUT(Derived, T, T2) \
+  SUGIYAMA_HITER_INST_IMPL(sugiyama::FacHiddenIterBiOutput, Derived, T, T2); \
+  template class ::sugiyama::FacHiddenIter<Derived, T, ::sugiyama::HiddenIterCap::Bidir, ::sugiyama::HiddenIterCap::Output>; \
+  template class ::sugiyama::HiddenIterCap::Bidir<Derived, T>; \
+  template class ::sugiyama::HiddenIterCap::Output<Derived, T>;
+
+#define SUGIYAMA_HITER_INST_BIOUTPUT(Derived, T, T2) \
+  SUGIYAMA_HITER_INST_IMPL(sugiyama::FacHiddenIterBiOutput, Derived, T, T2); \
+  template class ::sugiyama::FacHiddenIter<Derived, T, ::sugiyama::HiddenIterCap::Bidir, ::sugiyama::HiddenIterCap::Output>; \
+  template class ::sugiyama::HiddenIterCap::Bidir<Derived, T>; \
+  template class ::sugiyama::HiddenIterCap::Output<Derived, T>;
