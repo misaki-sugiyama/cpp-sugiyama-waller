@@ -1,4 +1,4 @@
-#include "hiter-biout.sub.h"
+#include "biout.sub.h"
 #include "sugiyama/factory-hiter-inl.h"
 
 #include <list>

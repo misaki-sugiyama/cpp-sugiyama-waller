@@ -1,4 +1,4 @@
-#include "pimpl0.sub.h"
+#include "0.sub.h"
 #include "sugiyama/pimpl-inl.h"
 
 class Test0::Impl {

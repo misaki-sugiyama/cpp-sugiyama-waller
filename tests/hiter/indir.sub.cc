@@ -1,4 +1,4 @@
-#include "hiter-indir.sub.h"
+#include "indir.sub.h"
 #include "sugiyama/factory-hiter-inl.h"
 
 #include <map>

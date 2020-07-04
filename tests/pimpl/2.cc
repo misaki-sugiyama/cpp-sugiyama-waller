@@ -1,5 +1,5 @@
 // Simple pimpl object with two parameters
-#include "pimpl2.sub.h"
+#include "2.sub.h"
 #include <catch2/catch_test_macros.hpp>
 
 // === two parameters === //

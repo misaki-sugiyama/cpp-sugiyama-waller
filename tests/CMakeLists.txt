@@ -13,10 +13,9 @@ set(CMAKE_CXX_EXTENSIONS OFF CACHE INTERNAL "CMAKE_CXX_EXTENSIONS") # use -std=c
 add_subdirectory(.. orig)
 add_subdirectory(deps/catch2)
 
-file(GLOB srcs LIST_DIRECTORIES true CONFIGURE_DEPENDS *.cc *.h)
+file(GLOB srcs LIST_DIRECTORIES true CONFIGURE_DEPENDS */*.cc */*.h)
 
 add_executable(test-program ${srcs})
-target_include_directories(test-program PRIVATE .)
 target_link_libraries(test-program sugiyama-waller)
 target_link_libraries(test-program Catch2::Catch2WithMain)
 

@@ -1,5 +1,5 @@
 // Test direct version of read-only hidden iterator
-#include "hiter-direct.sub.h"
+#include "direct.sub.h"
 #include <catch2/catch_test_macros.hpp>
 
 #include <forward_list>

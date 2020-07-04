@@ -1,5 +1,5 @@
 // Test bi-directional version of read-write hidden iterator
-#include "hiter-indir.sub.h"
+#include "indir.sub.h"
 #include <catch2/catch_test_macros.hpp>
 
 #include <map>

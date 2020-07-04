@@ -1,5 +1,5 @@
+#include "2.sub.h"
 #include "sugiyama/pimpl-inl.h"
-#include "pimpl2.sub.h"
 
 class Test2::Impl {
 public:

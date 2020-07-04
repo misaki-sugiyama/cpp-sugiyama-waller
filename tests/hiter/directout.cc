@@ -1,20 +1,20 @@
-// Test bi-directional version of read-write hidden iterator
-#include "hiter-biout.sub.h"
+// Test direct version of read-write hidden iterator
+#include "directout.sub.h"
 #include <catch2/catch_test_macros.hpp>
 
-#include <list>
+#include <forward_list>
 
-SCENARIO("Bi-directional read-write iterator", "[hiter]") {
+SCENARIO("Read-write iterator", "[hiter]") {
 
   THEN("It should be default-constructable") {
-    IterBListIntOut empty;
+    IterSListIntOut empty;
   }
 
-  GIVEN("An iterator for list<int>") {
-    const std::list<int> s {9,3,7};
+  GIVEN("An iterator for forward_list<int>") {
+    const std::forward_list<int> s {9,3,7};
     THEN("It simply works") {
       auto itr = s.begin(), itrEnd = s.end();
-      IterBListIntOut b {&itr}, e {&itrEnd};
+      IterSListIntOut b {&itr}, e {&itrEnd};
       for (; itr != itrEnd; ++itr, ++b) {
         REQUIRE(*b == *itr);
         REQUIRE(b != e);
@@ -24,7 +24,7 @@ SCENARIO("Bi-directional read-write iterator", "[hiter]") {
 
     THEN("It can write") {
       auto itr = s.begin();
-      IterBListIntOut b {&itr};
+      IterSListIntOut b {&itr};
       *b = 20;
       REQUIRE(*s.begin() == 20);
     }

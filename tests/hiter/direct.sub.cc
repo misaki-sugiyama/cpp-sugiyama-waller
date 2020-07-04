@@ -1,4 +1,4 @@
-#include "hiter-direct.sub.h"
+#include "direct.sub.h"
 #include "sugiyama/factory-hiter-inl.h"
 
 #include <forward_list>

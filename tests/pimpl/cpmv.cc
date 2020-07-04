@@ -1,5 +1,5 @@
 // Simple pimpl object which can be copied or moved
-#include "pimpl-cpmv.sub.h"
+#include "cpmv.sub.h"
 #include <catch2/catch_test_macros.hpp>
 
 using testclass::TestCpMv;
