@@ -1,10 +1,11 @@
 // Test bi-directional version of read-write hidden iterator
 #include "indir.sub.h"
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_string.hpp>
+using Catch::Matchers::Equals;
 
 #include <map>
 #include <string>
-#include <cstring> // for strcmp
 
 SCENARIO("Indirect map iterator", "[hiter]") {
 
@@ -18,8 +19,8 @@ SCENARIO("Indirect map iterator", "[hiter]") {
       auto itr = m.begin(), itrEnd = m.end();
       IterMapStrIndir b {&itr}, e {&itrEnd};
       for (; itr != itrEnd; ++itr, ++b) {
-        REQUIRE(strcmp(b->first, itr->first.c_str()) == 0);
-        REQUIRE(strcmp(b->second, itr->second.c_str()) == 0);
+        REQUIRE_THAT(b->first, Equals(itr->first.c_str()));
+        REQUIRE_THAT(b->second, Equals(itr->second.c_str()));
         REQUIRE(b != e);
       }
       REQUIRE(b == e);
