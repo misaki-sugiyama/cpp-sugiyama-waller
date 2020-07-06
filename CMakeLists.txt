@@ -11,3 +11,6 @@ add_library(${PROJECT_NAME} STATIC ${srcs})
 target_sources(${PROJECT_NAME} INTERFACE ${hdrs})
 target_include_directories(${PROJECT_NAME} PUBLIC src)
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
+
+## Deps: magnum-singles
+target_include_directories(${PROJECT_NAME} PUBLIC deps/magnum-singles)
