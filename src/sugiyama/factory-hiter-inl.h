@@ -2,6 +2,7 @@
 #pragma once
 #include "sugiyama/crtp.h"
 #include "sugiyama/pimpl-inl.h"
+#include "sugiyama/factory-hiter.h"
 
 namespace sugiyama {
 
