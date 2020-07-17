@@ -1,4 +1,4 @@
-// Some simple macro shorthands
+// A simple macro to generate unique variable name
 #pragma once
 
 #define SUGIYAMA_CONCAT_NAME_2(name1, name2) name1##name2

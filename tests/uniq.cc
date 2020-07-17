@@ -1,5 +1,5 @@
 // Just make sure this compiles
-#include "sugiyama/short.h"
+#include "sugiyama/uniq.h"
 
 namespace {
   int __UNIQLOCALNAME__() { return 1; }
