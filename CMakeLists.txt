@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 3.14.5)
 project (sugiyama-waller LANGUAGES CXX)
 
-if (CMAKE_CURRENT_BINARY_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
-  message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_CURRENT_SOURCE_DIR}/CMakeCache.txt")
-endif()
+include(sugiyama.cmake)
+sugiyama_no_indir()
 
 file(GLOB_RECURSE hdrs LIST_DIRECTORIES true CONFIGURE_DEPENDS src/sugiyama/*.h)
 file(GLOB_RECURSE srcs LIST_DIRECTORIES true CONFIGURE_DEPENDS src/sugiyama/*.cc)
