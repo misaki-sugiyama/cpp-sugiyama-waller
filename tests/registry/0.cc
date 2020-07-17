@@ -1,5 +1,5 @@
 // 0-parameter registered things
-#include "sub0.class.h"
+#include "0.sub.class.h"
 #include "sugiyama/exception-registry.h"
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
