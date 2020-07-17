@@ -1,8 +1,8 @@
 // The inline implementation file of the hidden iterator factory
 #pragma once
+#include "sugiyama/factory-hiter.h"
 #include "sugiyama/crtp.h"
 #include "sugiyama/pimpl-inl.h"
-#include "sugiyama/factory-hiter.h"
 
 namespace sugiyama {
 

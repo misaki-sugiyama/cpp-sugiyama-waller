@@ -19,7 +19,7 @@ namespace sugiyama {
     snprintf(m_what, SZEXCEPTION, "%ld", what);
   }
   exception::exception(float what) {
-    snprintf(m_what, SZEXCEPTION, "%lf", what);
+    snprintf(m_what, SZEXCEPTION, "%f", what);
   }
   exception::exception(double what) {
     snprintf(m_what, SZEXCEPTION, "%lf", what);
