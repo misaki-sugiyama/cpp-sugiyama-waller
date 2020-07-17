@@ -3,6 +3,7 @@
 #include "sugiyama/iterator-registry.h"
 #include "sugiyama/pimpl.h"
 #include "sugiyama/uniq.h"
+#include "sugiyama/itf-registrable.h"
 
 #include "CorradePointer.h"
 using Corrade::Containers::Pointer;
@@ -19,6 +20,7 @@ namespace sugiyama {
   // Factory to generate a registry given interface and constructor argument types
   template <class Derived, class Itf, typename... Args>
   class FacRegistry : public IRegistry {
+    static_assert(std::is_base_of<IRegistrable, Itf>::value, "Itf must be derived from IRegistrable");
   protected:
     class Impl; PImpl<Impl> pimpl;
 
@@ -68,7 +70,3 @@ namespace sugiyama {
   namespace { \
     static bool __UNIQLOCALNAME__ = ClassName::Registry::obj().reg<ClassName>(); \
   }
-
-#define SUGIYAMA_NAME_DESC(n, d) \
-  static constexpr const char* name {n}; \
-  static constexpr const char* desc {d};
