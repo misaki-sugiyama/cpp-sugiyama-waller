@@ -1,5 +1,6 @@
 #pragma once
 #include "sugiyama/pimpl.h"
+#include "sugiyama/ro5.h"
 
 namespace testclass {
 
@@ -11,7 +12,7 @@ namespace testclass {
     TestCpMv();
     TestCpMv(int a);
 
-    SUGIYAMA_PIMPL_FIVE_DEC(TestCpMv);
+    SUGIYAMA_RO5_DEC(TestCpMv);
 
     int* getPtr();
   };

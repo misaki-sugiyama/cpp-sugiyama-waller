@@ -1,5 +1,6 @@
 // The factory to produce pimpl classes
 #pragma once
+#include "sugiyama/ro5.h"
 
 namespace sugiyama {
 
@@ -9,15 +10,9 @@ namespace sugiyama {
     // Yes, horrible raw pointer in order not to include smart pointer headers here
     T* m_ptr {nullptr};
   public:
-    // Ctor Dtor etc.
+    // Ctor Dtor move copy etc.
     template <typename... Args> PImpl(Args&& ...);
-    ~PImpl();
-
-    // Move and Copy
-    PImpl(PImpl<T>&& rhs) noexcept;
-    PImpl<T>& operator=(PImpl<T>&& rhs) noexcept;
-    PImpl(const PImpl<T>& rhs);
-    PImpl<T>& operator=(const PImpl<T>& rhs);
+    SUGIYAMA_RO5_DEC(PImpl);
 
     // Overloadings to get the actual underlying implementation object
     T* operator->();
@@ -27,12 +22,3 @@ namespace sugiyama {
   };
 
 }
-
-// == Convenient macros ==
-
-#define SUGIYAMA_PIMPL_FIVE_DEC(ClassName) \
-  virtual ~ClassName(); \
-  ClassName(ClassName&& rhs) noexcept; \
-  virtual ClassName& operator=(ClassName&& rhs) noexcept; \
-  ClassName(const ClassName& rhs); \
-  virtual ClassName& operator=(const ClassName& rhs);
