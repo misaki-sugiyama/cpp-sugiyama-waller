@@ -1,6 +1,5 @@
 #include "cpmv.sub.h"
 #include "sugiyama/pimpl-inl.h"
-#include "sugiyama/ro5.h"
 
 #include <vector>
 
@@ -21,7 +20,11 @@ public:
 testclass::TestCpMv::TestCpMv() : pimpl(0) {}
 testclass::TestCpMv::TestCpMv(int a) : pimpl(a) {}
 
-SUGIYAMA_RO5_DEF(testclass::TestCpMv, TestCpMv);
+testclass::TestCpMv::~TestCpMv() = default;
+testclass::TestCpMv::TestCpMv(testclass::TestCpMv&& rhs) noexcept = default;
+testclass::TestCpMv& testclass::TestCpMv::operator=(testclass::TestCpMv&& rhs) noexcept = default;
+testclass::TestCpMv::TestCpMv(const testclass::TestCpMv& rhs) = default;
+testclass::TestCpMv& testclass::TestCpMv::operator=(const testclass::TestCpMv& rhs) = default;
 
 int* testclass::TestCpMv::getPtr() {
   return pimpl->getPtr();

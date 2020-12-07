@@ -1,6 +1,5 @@
 // The factory to produce pimpl classes
 #pragma once
-#include "sugiyama/ro5.h"
 
 namespace sugiyama {
 
@@ -12,7 +11,11 @@ namespace sugiyama {
   public:
     // Ctor Dtor move copy etc.
     template <typename... Args> PImpl(Args&& ...);
-    SUGIYAMA_RO5_DEC(PImpl);
+    ~PImpl();
+    PImpl(PImpl&& rhs) noexcept;
+    PImpl& operator=(PImpl&& rhs) noexcept;
+    PImpl(const PImpl& rhs);
+    PImpl& operator=(const PImpl& rhs);
 
     // Overloadings to get the actual underlying implementation object
     T* operator->();
